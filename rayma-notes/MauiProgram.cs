@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Plugin.Maui.Audio;
 using rayma_notes.ViewModels;
 using rayma_notes.Views;
 
@@ -15,7 +16,8 @@ namespace rayma_notes
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+                })
+                .AddAudio();
 
             builder.Services.AddTransient<RecordView>();
             builder.Services.AddTransient<RecordViewModel>();

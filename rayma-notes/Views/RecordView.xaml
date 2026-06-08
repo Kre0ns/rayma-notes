@@ -25,26 +25,6 @@
                 </Button.Triggers>
             </Button>
 
-            <Button Command="{Binding TogglePauseRecordingCommand}" 
-                    HeightRequest="100"
-                    WidthRequest="100"
-                    CornerRadius="25"
-                    HorizontalOptions="Center"
-                    Margin="5"
-                    IsEnabled="False"
-                    ImageSource="pause_recording.png">
-
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                        <Setter Property="IsEnabled" Value="True"/>
-                    </DataTrigger>
-
-                    <DataTrigger TargetType="Button" Binding="{Binding IsPaused}" Value="True">
-                        <Setter Property="ImageSource" Value="continue_recording.png"/>
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-
             <Button Command="{Binding EndRecordingCommand}" 
                     HeightRequest="100"
                     WidthRequest="100"
