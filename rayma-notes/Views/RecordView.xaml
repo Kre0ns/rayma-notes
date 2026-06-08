@@ -5,43 +5,68 @@
              x:Class="rayma_notes.Views.RecordView"
              x:DataType="viewmodels:RecordViewModel"
              Title="Record">
-    <VerticalStackLayout VerticalOptions="Center">
+    
+    <Grid RowDefinitions="*, Auto" 
+          Margin="10">
 
-        <HorizontalStackLayout HorizontalOptions="Center"
-                               Padding="5">
+        <Editor Text="{Binding NoteText}" 
+                Placeholder="Your note will appear here"
+                Grid.Row="0"/>
 
+        <Grid ColumnDefinitions="*, *, *" 
+              ColumnSpacing="10"
+              Margin="10"
+              Grid.Row="1">
+            
             <Button Command="{Binding BeginRecordingCommand}" 
-                    HeightRequest="100"
-                    WidthRequest="100"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                     CornerRadius="25"
-                    HorizontalOptions="Center"
-                    Margin="5"
-                    ImageSource="begin_recording.png">
+                    ImageSource="begin_recording.png"
+                    Grid.Column="0">
 
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
                         <Setter Property="IsEnabled" Value="False"/>
                     </DataTrigger>
                 </Button.Triggers>
+                
+            </Button>
+
+            <Button Command="{Binding SaveNoteCommand}" 
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                    CornerRadius="25"
+                    IsEnabled="False"
+                    ImageSource="save_note.png"
+                    Grid.Column="1">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding HasText}" Value="True">
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+                </Button.Triggers>
+
             </Button>
 
             <Button Command="{Binding EndRecordingCommand}" 
-                    HeightRequest="100"
-                    WidthRequest="100"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Center"
+                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                     CornerRadius="25"
-                    HorizontalOptions="Center"
-                    Margin="5"
                     IsEnabled="False"
-                    ImageSource="end_recording.png">
+                    ImageSource="end_recording.png"
+                    Grid.Column="2">
 
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
                         <Setter Property="IsEnabled" Value="True"/>
                     </DataTrigger>
                 </Button.Triggers>
+                
             </Button>
-
-        </HorizontalStackLayout>
-        
-    </VerticalStackLayout>
+        </Grid>
+    </Grid>
 </ContentPage>

@@ -11,7 +11,13 @@ namespace rayma_notes.ViewModels
         private readonly IAudioRecorder _audioRecorder;
 
         [ObservableProperty]
-        public partial bool IsRecording { get; set; }
+        public partial bool IsRecording { get; set; } = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasText))]
+        public partial string NoteText {  get; set; } = string.Empty;
+
+        public bool HasText => !string.IsNullOrWhiteSpace(NoteText);
 
         public RecordViewModel(IAudioManager audioManager)
         {
@@ -62,6 +68,13 @@ namespace rayma_notes.ViewModels
             }
         }
 
+        [RelayCommand]
+        private async Task SaveNote()
+        {
+            await AppShell.Current.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
+            NoteText = string.Empty;
+        }
+
         private async Task ProcessRecording(string filePath)
         {
             TranscriptionResult transcriptionResult = await GroqService.TranscribeAudioAsync(filePath);
@@ -99,8 +112,7 @@ namespace rayma_notes.ViewModels
             {
                 case CleanStatus.Success:
                     System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
-                    await AppShell.Current.DisplayAlertAsync("Cleaned", cleanResult.Text, "OK");
-
+                    NoteText = cleanResult.Text;
                     break;
 
                 case CleanStatus.RateLimitExceeded:
