@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
+using rayma_notes.Services;
 
 namespace rayma_notes.ViewModels
 {
@@ -49,13 +50,74 @@ namespace rayma_notes.ViewModels
 
                 if (audioSource is FileAudioSource fileAudioSource)
                 {
-                    string completedAudioPath = fileAudioSource.GetFilePath();
-                    System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {completedAudioPath}");
+                    string audioPath = fileAudioSource.GetFilePath();
+                    System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {audioPath}");
+
+                    await ProcessRecording(audioPath);
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Failed to stop: {ex.Message}");
+            }
+        }
+
+        private async Task ProcessRecording(string filePath)
+        {
+            TranscriptionResult transcriptionResult = await GroqService.TranscribeAudioAsync(filePath);
+
+            switch (transcriptionResult.Status)
+            {
+                case TranscriptionStatus.Success:
+                    System.Diagnostics.Debug.WriteLine($"Transcript: {transcriptionResult.Text}");
+                    break;
+
+                case TranscriptionStatus.EmptyTranscript:
+                    await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                    return;
+
+                case TranscriptionStatus.RateLimitExceeded:
+                    await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                    return;
+
+                case TranscriptionStatus.InvalidApiKey:
+                    await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    return;
+
+                case TranscriptionStatus.NetworkError:
+                    await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    return;
+
+                case TranscriptionStatus.SystemError:
+                    await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
+                    return;
+            }
+
+            CleanResult cleanResult = await GroqService.CleanTextAsync(transcriptionResult.Text);
+
+            switch (cleanResult.Status)
+            {
+                case CleanStatus.Success:
+                    System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
+                    await AppShell.Current.DisplayAlertAsync("Cleaned", cleanResult.Text, "OK");
+
+                    break;
+
+                case CleanStatus.RateLimitExceeded:
+                    await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                    return;
+
+                case CleanStatus.InvalidApiKey:
+                    await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    return;
+
+                case CleanStatus.NetworkError:
+                    await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    return;
+
+                case CleanStatus.SystemError:
+                    await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
+                    return;
             }
         }
     }
