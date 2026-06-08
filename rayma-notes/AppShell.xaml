@@ -4,11 +4,20 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:rayma_notes"
-    Title="rayma_notes">
+    xmlns:views="clr-namespace:rayma_notes.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Rayma Notes">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="Record" Icon="dotnet_bot.png">
+            <ShellContent ContentTemplate="{DataTemplate views:RecordView}" />
+        </Tab>
+        <Tab Title="Notes" Icon="dotnet_bot.png">
+            <ShellContent ContentTemplate="{DataTemplate views:NotesView}" />
+        </Tab>
+        <Tab Title="Settings" Icon="dotnet_bot.png">
+            <ShellContent ContentTemplate="{DataTemplate views:SettingsView}" />
+        </Tab>
+    </TabBar>
 
 </Shell>
