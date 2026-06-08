@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.RecordView"
-             Title="RecordView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             x:DataType="viewmodels:RecordViewModel"
+             Title="Record">
+    <VerticalStackLayout VerticalOptions="Center">
+
+        <HorizontalStackLayout HorizontalOptions="Center"
+                               Padding="5">
+
+            <Button Command="{Binding BeginRecordingCommand}" 
+                    HeightRequest="100"
+                    WidthRequest="100"
+                    CornerRadius="25"
+                    HorizontalOptions="Center"
+                    Margin="5"
+                    ImageSource="begin_recording.png">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+            <Button Command="{Binding TogglePauseRecordingCommand}" 
+                    HeightRequest="100"
+                    WidthRequest="100"
+                    CornerRadius="25"
+                    HorizontalOptions="Center"
+                    Margin="5"
+                    IsEnabled="False"
+                    ImageSource="pause_recording.png">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+
+                    <DataTrigger TargetType="Button" Binding="{Binding IsPaused}" Value="True">
+                        <Setter Property="ImageSource" Value="continue_recording.png"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+            <Button Command="{Binding EndRecordingCommand}" 
+                    HeightRequest="100"
+                    WidthRequest="100"
+                    CornerRadius="25"
+                    HorizontalOptions="Center"
+                    Margin="5"
+                    IsEnabled="False"
+                    ImageSource="end_recording.png">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+        </HorizontalStackLayout>
+        
     </VerticalStackLayout>
 </ContentPage>

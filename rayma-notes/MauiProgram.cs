@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using rayma_notes.ViewModels;
+using rayma_notes.Views;
 
 namespace rayma_notes
 {
@@ -15,8 +17,11 @@ namespace rayma_notes
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddTransient<RecordView>();
+            builder.Services.AddTransient<RecordViewModel>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

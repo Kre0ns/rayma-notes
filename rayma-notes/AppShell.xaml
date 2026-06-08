@@ -9,13 +9,13 @@
     Title="Rayma Notes">
 
     <TabBar>
-        <Tab Title="Record" Icon="dotnet_bot.png">
+        <Tab Title="Record" Icon="record_tab.png">
             <ShellContent ContentTemplate="{DataTemplate views:RecordView}" />
         </Tab>
-        <Tab Title="Notes" Icon="dotnet_bot.png">
+        <Tab Title="Notes" Icon="notes_tab.png">
             <ShellContent ContentTemplate="{DataTemplate views:NotesView}" />
         </Tab>
-        <Tab Title="Settings" Icon="dotnet_bot.png">
+        <Tab Title="Settings" Icon="settings_tab.png">
             <ShellContent ContentTemplate="{DataTemplate views:SettingsView}" />
         </Tab>
     </TabBar>
