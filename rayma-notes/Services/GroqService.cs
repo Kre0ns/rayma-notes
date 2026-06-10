@@ -172,7 +172,7 @@ namespace rayma_notes.Services
                     },
                         new {
                             role = "user",
-                            content = "<v>" + rawText + "</v>"
+                            content = $"<v>\n{rawText}\n</v>"
                             }
                     },
                     temperature = 0.3
