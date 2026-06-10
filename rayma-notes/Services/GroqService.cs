@@ -75,6 +75,8 @@ namespace rayma_notes.Services
 
     public static class GroqService
     {
+        private static readonly HttpClient _httpClient = new HttpClient();
+
         private const string TranscriptionModel = "whisper-large-v3-turbo";
         private const string CleanModel = "llama-3.3-70b-versatile";
 
@@ -102,8 +104,8 @@ namespace rayma_notes.Services
         {
             try
             {
-                using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
+                using var request = new HttpRequestMessage(HttpMethod.Post, TranscriptionEndpoint);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
 
                 using MultipartFormDataContent form = new MultipartFormDataContent();
                 byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
@@ -114,7 +116,9 @@ namespace rayma_notes.Services
                 form.Add(new StringContent(TranscriptionModel), "model");
                 form.Add(new StringContent("en"), "language");
 
-                HttpResponseMessage response = await client.PostAsync(TranscriptionEndpoint, form);
+                request.Content = form;
+
+                using HttpResponseMessage response = await _httpClient.SendAsync(request);
 
 
                 if (response.IsSuccessStatusCode)
@@ -157,9 +161,8 @@ namespace rayma_notes.Services
         {
             try
             {
-                using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
-
+                using var request = new HttpRequestMessage(HttpMethod.Post, ChatCompletionEndpoint);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
 
                 var payload = new
                 {
@@ -181,7 +184,9 @@ namespace rayma_notes.Services
                 string jsonPayload = JsonSerializer.Serialize(payload);
                 using StringContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync(ChatCompletionEndpoint, content);
+                request.Content = content;
+
+                using HttpResponseMessage response = await _httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -221,10 +226,10 @@ namespace rayma_notes.Services
         {
             try
             {
-                using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                using var request = new HttpRequestMessage(HttpMethod.Get, ModelListEndpoint);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
-                HttpResponseMessage response = await client.GetAsync(ModelListEndpoint);
+                using HttpResponseMessage response = await _httpClient.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
