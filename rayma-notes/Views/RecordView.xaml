@@ -9,9 +9,13 @@
     <Grid RowDefinitions="*, Auto" 
           Margin="10">
 
-        <Editor Text="{Binding NoteText}" 
-                Placeholder="Your note will appear here"
-                Grid.Row="0"/>
+        <Border StrokeShape="RoundRectangle 10"
+                Padding="7.5, 0, 7.5, 0">
+            
+            <Editor Text="{Binding NoteText}" 
+                    Placeholder="Your note will appear here"
+                    Grid.Row="0"/>
+        </Border>
 
         <Grid ColumnDefinitions="*, *, *" 
               ColumnSpacing="10"

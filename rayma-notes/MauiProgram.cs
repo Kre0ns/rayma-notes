@@ -26,6 +26,13 @@ namespace rayma_notes
             builder.Logging.AddDebug();
 #endif
 
+            Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null;
+#endif
+            });
+
             return builder.Build();
         }
     }

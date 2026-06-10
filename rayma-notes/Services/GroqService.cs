@@ -60,9 +60,9 @@ namespace rayma_notes.Services
         private const string TranscriptionEndpoint = "https://api.groq.com/openai/v1/audio/transcriptions";
         private const string ChatCompletionEndpoint = "https://api.groq.com/openai/v1/chat/completions";
 
-        private const string SystemPrompt = "You are a professional English editor. Format and clean up the following transcribed voice note. Correct grammar and spelling errors, remove verbal fillers (like 'eh', 'um', 'ah'), and organize the text into clean paragraphs. Output ONLY the edited English text. Do not include any introductory or conversational phrases.";
+        private const string SystemPrompt = "You are a professional English editors. Format and clean up the following transcribed voice note. Correct grammar and spelling errors, remove verbal fillers (like 'eh', 'um', 'ah'), and organize the text into clean paragraphs. Output ONLY the edited English text. Do not include any introductory or conversational phrases.";
 
-        private const string GroqApiKey = "key";
+        private const string GroqApiKey = "";
 
         public static async Task<TranscriptionResult> TranscribeAudioAsync(string filePath)
         {
