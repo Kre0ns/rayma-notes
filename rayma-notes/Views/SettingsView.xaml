@@ -21,10 +21,19 @@
                     Grid.Column="0"
                     Grid.Row="1">
 
-                <Entry IsPassword="True"/>
+                <Entry Text="{Binding ApiKeyText}"
+                       IsPassword="True">
+
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding HasApiKey}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
             </Border>
 
-            <Button HorizontalOptions="Fill"
+            <Button Command="{Binding HandleApiKeyCommand}" 
+                    HorizontalOptions="Fill"
                     VerticalOptions="Center"
                     HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                     CornerRadius="5"

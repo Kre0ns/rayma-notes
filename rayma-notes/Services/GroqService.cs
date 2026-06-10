@@ -52,6 +52,26 @@ namespace rayma_notes.Services
         }
     }
 
+    public enum KeyCheckStatus
+    {
+        Valid,
+        Invalid,
+        NetworkError,
+        SystemError
+    }
+
+    public class KeyCheckResult
+    {
+        public KeyCheckStatus Status { get; }
+        public string ErrorDetails { get; }
+
+        public KeyCheckResult(KeyCheckStatus status, string errorDetails)
+        {
+            Status = status;
+            ErrorDetails = errorDetails;
+        }
+    }
+
     public static class GroqService
     {
         private const string TranscriptionModel = "whisper-large-v3-turbo";
@@ -59,17 +79,16 @@ namespace rayma_notes.Services
 
         private const string TranscriptionEndpoint = "https://api.groq.com/openai/v1/audio/transcriptions";
         private const string ChatCompletionEndpoint = "https://api.groq.com/openai/v1/chat/completions";
+        private const string ModelListEndpoint = "https://api.groq.com/openai/v1/models";
 
         private const string SystemPrompt = "You are a professional English editors. Format and clean up the following transcribed voice note. Correct grammar and spelling errors, remove verbal fillers (like 'eh', 'um', 'ah'), and organize the text into clean paragraphs. Output ONLY the edited English text. Do not include any introductory or conversational phrases.";
-
-        private const string GroqApiKey = "";
 
         public static async Task<TranscriptionResult> TranscribeAudioAsync(string filePath)
         {
             try
             {
                 using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GroqApiKey);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
 
                 using MultipartFormDataContent form = new MultipartFormDataContent();
                 byte[] fileBytes = await File.ReadAllBytesAsync(filePath);
@@ -124,7 +143,7 @@ namespace rayma_notes.Services
             try
             {
                 using HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GroqApiKey);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await SecureStorage.Default.GetAsync("groq_api_key"));
 
 
                 var payload = new
@@ -175,6 +194,37 @@ namespace rayma_notes.Services
             catch (Exception ex)
             {
                 return new CleanResult(CleanStatus.SystemError, string.Empty, ex.Message);
+            }
+        }
+
+        public static async Task<KeyCheckResult> CheckApiKey(string apiKey)
+        {
+            try
+            {
+                using HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+
+                HttpResponseMessage response = await client.GetAsync(ModelListEndpoint);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return new KeyCheckResult(KeyCheckStatus.Valid, string.Empty);
+                }
+
+                string errorDetails = await response.Content.ReadAsStringAsync();
+                return response.StatusCode switch
+                {
+                    HttpStatusCode.Unauthorized => new KeyCheckResult(KeyCheckStatus.Invalid, errorDetails),
+                    _ => new KeyCheckResult(KeyCheckStatus.SystemError, $"HTTP {response.StatusCode}: {errorDetails}")
+                };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new KeyCheckResult(KeyCheckStatus.NetworkError, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return new KeyCheckResult(KeyCheckStatus.SystemError, ex.Message);
             }
         }
     }

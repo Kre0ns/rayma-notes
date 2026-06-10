@@ -10,4 +10,14 @@ public partial class SettingsView : ContentPage
 
 		BindingContext = viewModel;
 	}
+
+	protected override async void OnAppearing()
+	{
+		base.OnAppearing();
+
+		if (BindingContext is SettingsViewModel viewModel)
+		{
+			await viewModel.CheckApiKeyPresenceAsync();
+		}
+	}
 }
