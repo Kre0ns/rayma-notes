@@ -21,12 +21,21 @@ namespace rayma_notes
 
             builder.Services.AddTransient<RecordView>();
             builder.Services.AddTransient<RecordViewModel>();
+            builder.Services.AddTransient<SettingsView>();
+            builder.Services.AddTransient<SettingsViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
             Microsoft.Maui.Handlers.EditorHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.Background = null;
+#endif
+            });
+
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
             {
 #if ANDROID
                 handler.PlatformView.Background = null;

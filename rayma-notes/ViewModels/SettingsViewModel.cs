@@ -4,7 +4,7 @@ using System.Text;
 
 namespace rayma_notes.ViewModels
 {
-    internal class SettingsViewModel
+    public partial class SettingsViewModel
     {
     }
 }

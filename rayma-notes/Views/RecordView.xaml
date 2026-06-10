@@ -10,16 +10,16 @@
           Margin="10">
 
         <Border StrokeShape="RoundRectangle 10"
-                Padding="7.5, 0, 7.5, 0">
+                Padding="7.5, 0, 7.5, 0"
+                Grid.Row="0">
             
             <Editor Text="{Binding NoteText}" 
-                    Placeholder="Your note will appear here"
-                    Grid.Row="0"/>
+                    Placeholder="Your note will appear here"/>
         </Border>
 
         <Grid ColumnDefinitions="*, *, *" 
               ColumnSpacing="10"
-              Margin="10"
+              Margin="0, 10, 0, 10"
               Grid.Row="1">
             
             <Button Command="{Binding BeginRecordingCommand}" 
