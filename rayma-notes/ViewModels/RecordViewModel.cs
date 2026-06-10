@@ -115,6 +115,10 @@ namespace rayma_notes.ViewModels
                     NoteText = cleanResult.Text;
                     break;
 
+                case CleanStatus.EmptyOutput:
+                    await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                    return;
+
                 case CleanStatus.RateLimitExceeded:
                     await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
                     return;
