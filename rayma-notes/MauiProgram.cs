@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Plugin.Maui.Audio;
+using rayma_notes.Services;
+using rayma_notes.Services.Interfaces;
 using rayma_notes.ViewModels;
 using rayma_notes.Views;
 
@@ -19,8 +21,11 @@ namespace rayma_notes
                 })
                 .AddAudio();
 
+            builder.Services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
+
             builder.Services.AddTransient<RecordView>();
             builder.Services.AddTransient<RecordViewModel>();
+
             builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<SettingsViewModel>();
 

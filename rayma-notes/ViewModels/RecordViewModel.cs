@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
+using rayma_notes.Models;
 using rayma_notes.Services;
+using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels
 {
@@ -9,6 +11,8 @@ namespace rayma_notes.ViewModels
     {
         private readonly IAudioManager _audioManager;
         private readonly IAudioRecorder _audioRecorder;
+
+        private readonly IDatabaseService _databaseService;
 
         [ObservableProperty]
         public partial bool IsRecording { get; set; } = false;
@@ -19,10 +23,12 @@ namespace rayma_notes.ViewModels
 
         public bool HasText => !string.IsNullOrWhiteSpace(NoteText);
 
-        public RecordViewModel(IAudioManager audioManager)
+        public RecordViewModel(IAudioManager audioManager, IDatabaseService databaseService)
         {
             _audioManager = audioManager;
             _audioRecorder = _audioManager.CreateRecorder();
+
+            _databaseService = databaseService;
         }
         
         [RelayCommand]
@@ -71,8 +77,13 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task SaveNote()
         {
-            await AppShell.Current.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
+            
+            Note note = new Note { Text = NoteText };
+            await _databaseService.SaveNoteAsync(note);
+
             NoteText = string.Empty;
+
+            await AppShell.Current.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
         }
 
         private async Task ProcessRecording(string filePath)
