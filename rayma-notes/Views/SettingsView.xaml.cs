@@ -4,11 +4,9 @@ namespace rayma_notes.Views;
 
 public partial class SettingsView : ContentPage
 {
-	public SettingsView(SettingsViewModel viewModel)
+	public SettingsView()
 	{
 		InitializeComponent();
-
-		BindingContext = viewModel;
 	}
 
 	protected override async void OnAppearing()

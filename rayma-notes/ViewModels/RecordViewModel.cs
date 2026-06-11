@@ -88,7 +88,7 @@ namespace rayma_notes.ViewModels
 
             NoteText = string.Empty;
 
-            await AppShell.Current.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
+            await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
         }
 
         private async Task ProcessRecording(string filePath)
@@ -106,23 +106,23 @@ namespace rayma_notes.ViewModels
                         break;
 
                     case TranscriptionStatus.EmptyTranscript:
-                        await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
                         return;
 
                     case TranscriptionStatus.RateLimitExceeded:
-                        await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
                         return;
 
                     case TranscriptionStatus.InvalidApiKey:
-                        await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
                         return;
 
                     case TranscriptionStatus.NetworkError:
-                        await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
                         return;
 
                     case TranscriptionStatus.SystemError:
-                        await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
                         return;
                 }
 
@@ -136,23 +136,23 @@ namespace rayma_notes.ViewModels
                         break;
 
                     case CleanStatus.EmptyOutput:
-                        await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
                         return;
 
                     case CleanStatus.RateLimitExceeded:
-                        await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
                         return;
 
                     case CleanStatus.InvalidApiKey:
-                        await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
                         return;
 
                     case CleanStatus.NetworkError:
-                        await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
                         return;
 
                     case CleanStatus.SystemError:
-                        await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
+                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
                         return;
                 }
             }

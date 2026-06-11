@@ -11,7 +11,8 @@ namespace rayma_notes
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            var mainPage = activationState!.Context.Services.GetRequiredService<MainTabbedPage>();
+            return new Window(mainPage);
         }
     }
 }

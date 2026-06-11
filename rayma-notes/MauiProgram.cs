@@ -24,8 +24,13 @@ namespace rayma_notes
             builder.Services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
             builder.Services.AddSingleton<IAiService, GroqAiService>();
 
+            builder.Services.AddTransient<MainTabbedPage>();
+
             builder.Services.AddTransient<RecordView>();
             builder.Services.AddTransient<RecordViewModel>();
+
+            builder.Services.AddTransient<NotesView>();
+            builder.Services.AddTransient<NotesViewModel>();
 
             builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<SettingsViewModel>();

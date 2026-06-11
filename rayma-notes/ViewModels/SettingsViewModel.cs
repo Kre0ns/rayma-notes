@@ -68,15 +68,15 @@ namespace rayma_notes.ViewModels
                     break;
 
                 case KeyCheckStatus.Invalid:
-                    await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
                     break;
 
                 case KeyCheckStatus.NetworkError:
-                    await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
                     break;
 
                 case KeyCheckStatus.SystemError:
-                    await AppShell.Current.DisplayAlertAsync("System Error", $"Key validation failed: {checkResult.ErrorDetails}", "OK");
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Key validation failed: {checkResult.ErrorDetails}", "OK");
                     break;
             }
             
