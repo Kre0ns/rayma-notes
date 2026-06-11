@@ -21,6 +21,9 @@ namespace rayma_notes.ViewModels
         [NotifyPropertyChangedFor(nameof(HasText))]
         public partial string NoteText {  get; set; } = string.Empty;
 
+        [ObservableProperty]
+        public partial bool IsBusy { get; set; } = false;
+
         public bool HasText => !string.IsNullOrWhiteSpace(NoteText);
 
         public RecordViewModel(IAudioManager audioManager, IDatabaseService databaseService, IAiService aiService)
@@ -90,63 +93,72 @@ namespace rayma_notes.ViewModels
 
         private async Task ProcessRecording(string filePath)
         {
-            TranscriptionResult transcriptionResult = await _aiService.TranscribeAudioAsync(filePath);
+            IsBusy = true;
 
-            switch (transcriptionResult.Status)
+            try
             {
-                case TranscriptionStatus.Success:
-                    System.Diagnostics.Debug.WriteLine($"Transcript: {transcriptionResult.Text}");
-                    break;
+                TranscriptionResult transcriptionResult = await _aiService.TranscribeAudioAsync(filePath);
 
-                case TranscriptionStatus.EmptyTranscript:
-                    await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
-                    return;
+                switch (transcriptionResult.Status)
+                {
+                    case TranscriptionStatus.Success:
+                        System.Diagnostics.Debug.WriteLine($"Transcript: {transcriptionResult.Text}");
+                        break;
 
-                case TranscriptionStatus.RateLimitExceeded:
-                    await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
-                    return;
+                    case TranscriptionStatus.EmptyTranscript:
+                        await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                        return;
 
-                case TranscriptionStatus.InvalidApiKey:
-                    await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
-                    return;
+                    case TranscriptionStatus.RateLimitExceeded:
+                        await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                        return;
 
-                case TranscriptionStatus.NetworkError:
-                    await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
-                    return;
+                    case TranscriptionStatus.InvalidApiKey:
+                        await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                        return;
 
-                case TranscriptionStatus.SystemError:
-                    await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
-                    return;
+                    case TranscriptionStatus.NetworkError:
+                        await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                        return;
+
+                    case TranscriptionStatus.SystemError:
+                        await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
+                        return;
+                }
+
+                CleanResult cleanResult = await _aiService.CleanTextAsync(transcriptionResult.Text);
+
+                switch (cleanResult.Status)
+                {
+                    case CleanStatus.Success:
+                        System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
+                        NoteText = cleanResult.Text;
+                        break;
+
+                    case CleanStatus.EmptyOutput:
+                        await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                        return;
+
+                    case CleanStatus.RateLimitExceeded:
+                        await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                        return;
+
+                    case CleanStatus.InvalidApiKey:
+                        await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                        return;
+
+                    case CleanStatus.NetworkError:
+                        await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                        return;
+
+                    case CleanStatus.SystemError:
+                        await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
+                        return;
+                }
             }
-
-            CleanResult cleanResult = await _aiService.CleanTextAsync(transcriptionResult.Text);
-
-            switch (cleanResult.Status)
+            finally
             {
-                case CleanStatus.Success:
-                    System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
-                    NoteText = cleanResult.Text;
-                    break;
-
-                case CleanStatus.EmptyOutput:
-                    await AppShell.Current.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
-                    return;
-
-                case CleanStatus.RateLimitExceeded:
-                    await AppShell.Current.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
-                    return;
-
-                case CleanStatus.InvalidApiKey:
-                    await AppShell.Current.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
-                    return;
-
-                case CleanStatus.NetworkError:
-                    await AppShell.Current.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
-                    return;
-
-                case CleanStatus.SystemError:
-                    await AppShell.Current.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
-                    return;
+                IsBusy = false;
             }
         }
     }

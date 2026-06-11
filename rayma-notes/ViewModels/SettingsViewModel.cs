@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels

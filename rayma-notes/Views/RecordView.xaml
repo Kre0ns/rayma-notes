@@ -5,72 +5,86 @@
              x:Class="rayma_notes.Views.RecordView"
              x:DataType="viewmodels:RecordViewModel"
              Title="Record">
-    
-    <Grid RowDefinitions="*, Auto" 
-          Margin="10">
 
-        <Border StrokeShape="RoundRectangle 10"
-                Padding="7.5, 0, 7.5, 0"
-                Grid.Row="0">
+    <Grid>
+        <Grid RowDefinitions="*, Auto" 
+                  Margin="10">
+
+            <Border StrokeShape="RoundRectangle 10"
+                        Padding="7.5, 0, 7.5, 0"
+                        Grid.Row="0">
+
+                <Editor Text="{Binding NoteText}" 
+                            Placeholder="Your note will appear here"/>
+            </Border>
+
+            <Grid ColumnDefinitions="*, *, *" 
+                      ColumnSpacing="10"
+                      Margin="0, 10, 0, 10"
+                      Grid.Row="1">
+
+                <Button Command="{Binding BeginRecordingCommand}" 
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Center"
+                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                            CornerRadius="25"
+                            ImageSource="begin_recording.png"
+                            Grid.Column="0">
+
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+
+                </Button>
+
+                <Button Command="{Binding SaveNoteCommand}" 
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Center"
+                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                            CornerRadius="25"
+                            IsEnabled="False"
+                            ImageSource="save_note.png"
+                            Grid.Column="1">
+
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding HasText}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+
+                </Button>
+
+                <Button Command="{Binding EndRecordingCommand}" 
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Center"
+                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                            CornerRadius="25"
+                            IsEnabled="False"
+                            ImageSource="end_recording.png"
+                            Grid.Column="2">
+
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid BackgroundColor="#40000000"
+              IsVisible="{Binding IsBusy}">
+
+            <VerticalStackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center">
+
+                <ActivityIndicator IsRunning="True"/>
+                <Label Text="Processing your note, please wait..." />
+            </VerticalStackLayout>
             
-            <Editor Text="{Binding NoteText}" 
-                    Placeholder="Your note will appear here"/>
-        </Border>
-
-        <Grid ColumnDefinitions="*, *, *" 
-              ColumnSpacing="10"
-              Margin="0, 10, 0, 10"
-              Grid.Row="1">
-            
-            <Button Command="{Binding BeginRecordingCommand}" 
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                    CornerRadius="25"
-                    ImageSource="begin_recording.png"
-                    Grid.Column="0">
-
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                        <Setter Property="IsEnabled" Value="False"/>
-                    </DataTrigger>
-                </Button.Triggers>
-                
-            </Button>
-
-            <Button Command="{Binding SaveNoteCommand}" 
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                    CornerRadius="25"
-                    IsEnabled="False"
-                    ImageSource="save_note.png"
-                    Grid.Column="1">
-
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding HasText}" Value="True">
-                        <Setter Property="IsEnabled" Value="True"/>
-                    </DataTrigger>
-                </Button.Triggers>
-
-            </Button>
-
-            <Button Command="{Binding EndRecordingCommand}" 
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                    CornerRadius="25"
-                    IsEnabled="False"
-                    ImageSource="end_recording.png"
-                    Grid.Column="2">
-
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                        <Setter Property="IsEnabled" Value="True"/>
-                    </DataTrigger>
-                </Button.Triggers>
-                
-            </Button>
         </Grid>
     </Grid>
 </ContentPage>
