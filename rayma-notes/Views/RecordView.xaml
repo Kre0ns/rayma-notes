@@ -4,78 +4,28 @@
              xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.RecordView"
              x:DataType="viewmodels:RecordViewModel"
-             Title="Record">
+             NavigationPage.HasNavigationBar="False">
 
     <Grid>
-        <Grid RowDefinitions="*, Auto" 
-                  Margin="10">
+        <Button Command="{Binding ToggleRecordingCommand}" 
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                WidthRequest="150"
+                CornerRadius="75"
+                Margin="10"
+                ImageSource="begin_recording.png">
 
-            <Border StrokeShape="RoundRectangle 10"
-                        Padding="7.5, 0, 7.5, 0"
-                        Grid.Row="0">
+            <Button.Triggers>
+                <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
+                    <Setter Property="CornerRadius" Value="30"/>
+                    <Setter Property="BackgroundColor" Value="Red"/>
+                    <Setter Property="ImageSource" Value="end_recording.png"/>
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
 
-                <Editor Text="{Binding NoteText}" 
-                            Placeholder="Your note will appear here"/>
-            </Border>
-
-            <Grid ColumnDefinitions="*, *, *" 
-                      ColumnSpacing="10"
-                      Margin="0, 10, 0, 10"
-                      Grid.Row="1">
-
-                <Button Command="{Binding BeginRecordingCommand}" 
-                            HorizontalOptions="Fill"
-                            VerticalOptions="Center"
-                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                            CornerRadius="25"
-                            ImageSource="begin_recording.png"
-                            Grid.Column="0">
-
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Button.Triggers>
-
-                </Button>
-
-                <Button Command="{Binding SaveNoteCommand}" 
-                            HorizontalOptions="Fill"
-                            VerticalOptions="Center"
-                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                            CornerRadius="25"
-                            IsEnabled="False"
-                            ImageSource="save_note.png"
-                            Grid.Column="1">
-
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding HasText}" Value="True">
-                            <Setter Property="IsEnabled" Value="True"/>
-                        </DataTrigger>
-                    </Button.Triggers>
-
-                </Button>
-
-                <Button Command="{Binding EndRecordingCommand}" 
-                            HorizontalOptions="Fill"
-                            VerticalOptions="Center"
-                            HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                            CornerRadius="25"
-                            IsEnabled="False"
-                            ImageSource="end_recording.png"
-                            Grid.Column="2">
-
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                            <Setter Property="IsEnabled" Value="True"/>
-                        </DataTrigger>
-                    </Button.Triggers>
-
-                </Button>
-            </Grid>
-        </Grid>
-
-        <Grid BackgroundColor="#40000000"
+        <Grid BackgroundColor="Transparent"
               IsVisible="{Binding IsBusy}">
 
             <VerticalStackLayout VerticalOptions="Center"
@@ -84,7 +34,6 @@
                 <ActivityIndicator IsRunning="True"/>
                 <Label Text="Processing your note, please wait..." />
             </VerticalStackLayout>
-            
         </Grid>
     </Grid>
 </ContentPage>

@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.SettingsView"
              x:DataType="viewmodels:SettingsViewModel"
-             Title="Settings">
+             NavigationPage.HasNavigationBar="False">
     
     <VerticalStackLayout Margin="10" Spacing="10">
 
@@ -12,38 +12,38 @@
               ColumnDefinitions="*, Auto"
               ColumnSpacing="5">
 
-            <Label Text="API Key"
-                   Margin="5, 0, 5, 5"
-                   Grid.Row="0"/>
+                <Label Text="API Key"
+                       Margin="5, 0, 5, 2"
+                       Grid.Row="0"/>
 
-            <Border StrokeShape="RoundRectangle 5"
-                    Padding="7.5, 0, 7.5, 0"
-                    Grid.Column="0"
-                    Grid.Row="1">
+                <Border StrokeShape="RoundRectangle 10"
+                        Padding="7.5, 0, 7.5, 0"
+                        Grid.Column="0"
+                        Grid.Row="1">
 
-                <Entry Text="{Binding ApiKeyText}"
-                       IsPassword="True">
+                    <Entry Text="{Binding ApiKeyText}"
+                           IsPassword="True">
 
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry" Binding="{Binding HasApiKey}" Value="True">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
-            </Border>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding HasApiKey}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                </Border>
 
             <Button Command="{Binding HandleApiKeyCommand}" 
                     HorizontalOptions="Fill"
                     VerticalOptions="Center"
                     HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                    CornerRadius="5"
-                    ImageSource="save_setting.png"
+                    CornerRadius="10"
+                    ImageSource="confirm.png"
                     Grid.Column="1"
                     Grid.Row="1">
 
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding HasApiKey}" Value="True">
-                        <Setter Property="ImageSource" Value="delete_setting.png"/>
+                        <Setter Property="ImageSource" Value="delete.png"/>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

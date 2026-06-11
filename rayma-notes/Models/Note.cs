@@ -9,9 +9,13 @@ namespace rayma_notes.Models
         [Column("id")]
         public int Id { get; set; }
 
-        [Column("text")]
+        [Column("title")]
         [NotNull]
-        public string Text { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+
+        [Column("body")]
+        [NotNull]
+        public string Body { get; set; } = string.Empty;
 
         [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

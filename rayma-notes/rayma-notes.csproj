@@ -74,7 +74,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\NoteReviewView.xaml.cs">
+	    <DependentUpon>NoteReviewView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="MainTabbedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\NoteReviewView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\NotesView.xaml">

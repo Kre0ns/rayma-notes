@@ -57,15 +57,15 @@ namespace rayma_notes.Services
 
             if (note.Id == 0)
             {
-                string sql = "INSERT INTO notes (text, created_at) VALUES (?, ?)";
+                string sql = "INSERT INTO notes (title, body, created_at) VALUES (?, ?, ?)";
 
-                return await _database!.ExecuteAsync(sql, note.Text, note.CreatedAt);
+                return await _database!.ExecuteAsync(sql, note.Title, note.Body, note.CreatedAt);
             }
             else
             {
-                string sql = "UPDATE notes SET text = ?, created_at = ? WHERE id = ?";
+                string sql = "UPDATE notes SET title = ?, body = ?, created_at = ? WHERE id = ?";
 
-                return await _database!.ExecuteAsync(sql, note.Text, note.CreatedAt, note.Id);
+                return await _database!.ExecuteAsync(sql, note.Title, note.Body, note.CreatedAt, note.Id);
             }
         }
     }

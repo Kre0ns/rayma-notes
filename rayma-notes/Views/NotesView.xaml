@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:rayma_notes.Models"
              x:Class="rayma_notes.Views.NotesView"
              x:DataType="viewmodels:NotesViewModel"
-             Title="Notes">
+             NavigationPage.HasNavigationBar="False">
     <Grid>
         <CollectionView ItemsSource="{Binding Notes}"
                         EmptyView="No notes yet. Start by recording one!">
@@ -14,7 +14,7 @@
                 <DataTemplate x:DataType="models:Note">
                     <Border>
                         <VerticalStackLayout>
-                            <Label Text="{Binding Text}"
+                            <Label Text="{Binding Title}"
                                    LineBreakMode="WordWrap"/>
 
                             <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" />

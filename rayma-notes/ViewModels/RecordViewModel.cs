@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
-using rayma_notes.Models;
+using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels
@@ -10,36 +10,27 @@ namespace rayma_notes.ViewModels
     {
         private readonly IAudioManager _audioManager;
         private readonly IAudioRecorder _audioRecorder;
-
-        private readonly IDatabaseService _databaseService;
         private readonly IAiService _aiService;
+        private readonly NavigationService _navigationService;
 
         [ObservableProperty]
         public partial bool IsRecording { get; set; } = false;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(HasText))]
-        public partial string NoteText {  get; set; } = string.Empty;
-
-        [ObservableProperty]
         public partial bool IsBusy { get; set; } = false;
 
-        public bool HasText => !string.IsNullOrWhiteSpace(NoteText);
-
-        public RecordViewModel(IAudioManager audioManager, IDatabaseService databaseService, IAiService aiService)
+        public RecordViewModel(IAudioManager audioManager, IAiService aiService, NavigationService navigationService)
         {
             _audioManager = audioManager;
             _audioRecorder = _audioManager.CreateRecorder();
-
-            _databaseService = databaseService;
-
             _aiService = aiService;
+            _navigationService = navigationService;
         }
-        
+
         [RelayCommand]
-        private async Task BeginRecording()
+        private async Task ToggleRecording()
         {
-            PermissionStatus permissionStatus =  await Permissions.RequestAsync<Permissions.Microphone>();
+            PermissionStatus permissionStatus = await Permissions.RequestAsync<Permissions.Microphone>();
             if (permissionStatus != PermissionStatus.Granted)
             {
                 return;
@@ -47,48 +38,31 @@ namespace rayma_notes.ViewModels
 
             try
             {
-                await _audioRecorder.StartAsync();
-                IsRecording = true;
+                if (!IsRecording)
+                {
+                    await _audioRecorder.StartAsync();
+
+                    IsRecording = true;
+                }
+                else
+                {
+                    IsRecording = false;
+
+                    IAudioSource audioSource = await _audioRecorder.StopAsync();
+
+                    if (audioSource is FileAudioSource fileAudioSource)
+                    {
+                        string audioPath = fileAudioSource.GetFilePath();
+                        System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {audioPath}");
+
+                        await ProcessRecording(audioPath);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Failed to record: {ex.Message}");
             }
-        }
-
-        [RelayCommand]
-        private async Task EndRecording()
-        {
-            IsRecording = false;
-
-            try
-            {
-                IAudioSource audioSource = await _audioRecorder.StopAsync();
-
-                if (audioSource is FileAudioSource fileAudioSource)
-                {
-                    string audioPath = fileAudioSource.GetFilePath();
-                    System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {audioPath}");
-
-                    await ProcessRecording(audioPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to stop: {ex.Message}");
-            }
-        }
-
-        [RelayCommand]
-        private async Task SaveNote()
-        {
-            
-            Note note = new Note { Text = NoteText };
-            await _databaseService.SaveNoteAsync(note);
-
-            NoteText = string.Empty;
-
-            await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Note Saved", "Placeholder", "OK");
         }
 
         private async Task ProcessRecording(string filePath)
@@ -99,66 +73,80 @@ namespace rayma_notes.ViewModels
             {
                 TranscriptionResult transcriptionResult = await _aiService.TranscribeAudioAsync(filePath);
 
-                switch (transcriptionResult.Status)
+                if (transcriptionResult.Status != TranscriptionStatus.Success)
                 {
-                    case TranscriptionStatus.Success:
-                        System.Diagnostics.Debug.WriteLine($"Transcript: {transcriptionResult.Text}");
-                        break;
-
-                    case TranscriptionStatus.EmptyTranscript:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
-                        return;
-
-                    case TranscriptionStatus.RateLimitExceeded:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
-                        return;
-
-                    case TranscriptionStatus.InvalidApiKey:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
-                        return;
-
-                    case TranscriptionStatus.NetworkError:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
-                        return;
-
-                    case TranscriptionStatus.SystemError:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
-                        return;
+                    await HandleTranscriptionErrorAsync(transcriptionResult);
+                    return;
                 }
 
                 CleanResult cleanResult = await _aiService.CleanTextAsync(transcriptionResult.Text);
 
-                switch (cleanResult.Status)
+                if (cleanResult.Status != CleanStatus.Success)
                 {
-                    case CleanStatus.Success:
-                        System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
-                        NoteText = cleanResult.Text;
-                        break;
-
-                    case CleanStatus.EmptyOutput:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
-                        return;
-
-                    case CleanStatus.RateLimitExceeded:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
-                        return;
-
-                    case CleanStatus.InvalidApiKey:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
-                        return;
-
-                    case CleanStatus.NetworkError:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
-                        return;
-
-                    case CleanStatus.SystemError:
-                        await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
-                        return;
+                    await HandleCleanErrorAsync(cleanResult);
+                    return;
                 }
+
+                System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
+
+                await _navigationService.PushReviewPageAsync(cleanResult.Text);
+
             }
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private static async Task HandleTranscriptionErrorAsync(TranscriptionResult transcriptionResult)
+        {
+            switch (transcriptionResult.Status)
+            {
+                case TranscriptionStatus.EmptyTranscript:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                    return;
+
+                case TranscriptionStatus.RateLimitExceeded:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                    return;
+
+                case TranscriptionStatus.InvalidApiKey:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    return;
+
+                case TranscriptionStatus.NetworkError:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    return;
+
+                case TranscriptionStatus.SystemError:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {transcriptionResult.ErrorDetails}", "OK");
+                    return;
+            }
+        }
+
+        private static async Task HandleCleanErrorAsync(CleanResult cleanResult)
+        {
+            switch (cleanResult.Status)
+            {
+                case CleanStatus.EmptyOutput:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Silent Recording", "We didn't hear anything. Try speaking louder or holder the phone closer.", "OK");
+                    return;
+
+                case CleanStatus.RateLimitExceeded:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Too Fast", "You are creating notes too quickly. Please pause for a moment.", "OK");
+                    return;
+
+                case CleanStatus.InvalidApiKey:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    return;
+
+                case CleanStatus.NetworkError:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    return;
+
+                case CleanStatus.SystemError:
+                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Transcription failed: {cleanResult.ErrorDetails}", "OK");
+                    return;
             }
         }
     }
