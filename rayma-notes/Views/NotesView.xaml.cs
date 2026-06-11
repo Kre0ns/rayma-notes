@@ -1,3 +1,5 @@
+using rayma_notes.ViewModels;
+
 namespace rayma_notes.Views;
 
 public partial class NotesView : ContentPage
@@ -6,4 +8,14 @@ public partial class NotesView : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is NotesViewModel viewModel)
+        {
+            await viewModel.LoadNotesAsync();
+        }
+    }
 }
