@@ -1,16 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using rayma_notes.Services;
+using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels
 {
     public partial class SettingsViewModel : ObservableObject
     {
+        private readonly IAiService _aiService;
+
         [ObservableProperty]
         public partial string ApiKeyText {  get; set; } = string.Empty;
 
         [ObservableProperty]
         public partial bool HasApiKey { get; set; } = false;
+
+        public SettingsViewModel(IAiService aiService) 
+        {
+            _aiService = aiService;
+        }
 
         [RelayCommand]
         private async Task HandleApiKey()
@@ -42,7 +50,7 @@ namespace rayma_notes.ViewModels
             ApiKeyText = HasApiKey ? new string('-', key!.Length) : String.Empty;
         }
 
-        private static async Task<bool> IsKeyValid(string apiKey)
+        private async Task<bool> IsKeyValid(string apiKey)
         {
             if (string.IsNullOrWhiteSpace(apiKey))
             {
@@ -51,7 +59,7 @@ namespace rayma_notes.ViewModels
 
             bool result = false;
 
-            KeyCheckResult checkResult = await GroqService.CheckApiKey(apiKey);
+            KeyCheckResult checkResult = await _aiService.CheckApiKeyAsync(apiKey);
 
             switch (checkResult.Status)
             {

@@ -1,81 +1,14 @@
-﻿using System.Net;
+﻿using rayma_notes.Services.Interfaces;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
 namespace rayma_notes.Services
 {
-    public enum TranscriptionStatus
+    public class GroqAiService : IAiService
     {
-        Success,
-        EmptyTranscript,
-        RateLimitExceeded,   
-        InvalidApiKey,       
-        NetworkError,       
-        SystemError          
-    }
-
-    public class TranscriptionResult
-    {
-        public TranscriptionStatus Status { get; }
-        public string Text { get; }
-        public string ErrorDetails { get; }
-
-        public TranscriptionResult(TranscriptionStatus status, string text, string errorDetails)
-        {
-            Status = status;
-            Text = text;
-            ErrorDetails = errorDetails;
-        }
-    }
-
-    public enum CleanStatus
-    {
-        Success,
-        EmptyOutput,
-        RateLimitExceeded,
-        InvalidApiKey,
-        NetworkError,
-        SystemError
-    }
-
-    public class CleanResult
-    {
-        public CleanStatus Status { get; }
-        public string Text { get; }
-        public string ErrorDetails { get; }
-
-        public CleanResult(CleanStatus status, string text, string errorDetails)
-        {
-            Status = status;
-            Text = text;
-            ErrorDetails = errorDetails;
-        }
-    }
-
-    public enum KeyCheckStatus
-    {
-        Valid,
-        Invalid,
-        NetworkError,
-        SystemError
-    }
-
-    public class KeyCheckResult
-    {
-        public KeyCheckStatus Status { get; }
-        public string ErrorDetails { get; }
-
-        public KeyCheckResult(KeyCheckStatus status, string errorDetails)
-        {
-            Status = status;
-            ErrorDetails = errorDetails;
-        }
-    }
-
-    public static class GroqService
-    {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private static readonly HttpClient _httpClient = new();
 
         private const string TranscriptionModel = "whisper-large-v3-turbo";
         private const string CleanModel = "llama-3.3-70b-versatile";
@@ -100,7 +33,7 @@ namespace rayma_notes.Services
         - If there are no words, a single word or dot, output nothing.
         ";
 
-        public static async Task<TranscriptionResult> TranscribeAudioAsync(string filePath)
+        public async Task<TranscriptionResult> TranscribeAudioAsync(string filePath)
         {
             try
             {
@@ -157,7 +90,7 @@ namespace rayma_notes.Services
             }
         }
 
-        public static async Task<CleanResult> CleanTextAsync(string rawText)
+        public async Task<CleanResult> CleanTextAsync(string rawText)
         {
             try
             {
@@ -222,7 +155,7 @@ namespace rayma_notes.Services
             }
         }
 
-        public static async Task<KeyCheckResult> CheckApiKey(string apiKey)
+        public async Task<KeyCheckResult> CheckApiKeyAsync(string apiKey)
         {
             try
             {

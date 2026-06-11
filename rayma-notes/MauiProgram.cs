@@ -22,6 +22,7 @@ namespace rayma_notes
                 .AddAudio();
 
             builder.Services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
+            builder.Services.AddSingleton<IAiService, GroqAiService>();
 
             builder.Services.AddTransient<RecordView>();
             builder.Services.AddTransient<RecordViewModel>();

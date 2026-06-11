@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
 using rayma_notes.Models;
-using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels
@@ -13,6 +12,7 @@ namespace rayma_notes.ViewModels
         private readonly IAudioRecorder _audioRecorder;
 
         private readonly IDatabaseService _databaseService;
+        private readonly IAiService _aiService;
 
         [ObservableProperty]
         public partial bool IsRecording { get; set; } = false;
@@ -23,12 +23,14 @@ namespace rayma_notes.ViewModels
 
         public bool HasText => !string.IsNullOrWhiteSpace(NoteText);
 
-        public RecordViewModel(IAudioManager audioManager, IDatabaseService databaseService)
+        public RecordViewModel(IAudioManager audioManager, IDatabaseService databaseService, IAiService aiService)
         {
             _audioManager = audioManager;
             _audioRecorder = _audioManager.CreateRecorder();
 
             _databaseService = databaseService;
+
+            _aiService = aiService;
         }
         
         [RelayCommand]
@@ -88,7 +90,7 @@ namespace rayma_notes.ViewModels
 
         private async Task ProcessRecording(string filePath)
         {
-            TranscriptionResult transcriptionResult = await GroqService.TranscribeAudioAsync(filePath);
+            TranscriptionResult transcriptionResult = await _aiService.TranscribeAudioAsync(filePath);
 
             switch (transcriptionResult.Status)
             {
@@ -117,7 +119,7 @@ namespace rayma_notes.ViewModels
                     return;
             }
 
-            CleanResult cleanResult = await GroqService.CleanTextAsync(transcriptionResult.Text);
+            CleanResult cleanResult = await _aiService.CleanTextAsync(transcriptionResult.Text);
 
             switch (cleanResult.Status)
             {
