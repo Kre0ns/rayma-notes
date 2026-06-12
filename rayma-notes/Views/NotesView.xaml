@@ -6,16 +6,27 @@
              x:Class="rayma_notes.Views.NotesView"
              x:DataType="viewmodels:NotesViewModel"
              NavigationPage.HasNavigationBar="False">
-    <Grid>
+    <Grid Margin="10">
         <CollectionView ItemsSource="{Binding Notes}"
                         EmptyView="No notes yet. Start by recording one!">
 
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Note">
-                    <Border>
+                    <Border StrokeShape="RoundRectangle 10"
+                            Padding="10">
                         <VerticalStackLayout>
                             <Label Text="{Binding Title}"
+                                   FontAttributes="Bold"
                                    LineBreakMode="WordWrap"/>
+
+                            <Label Text="{Binding Body}"
+                                   LineBreakMode="TailTruncation"
+                                   MaxLines="2"/>
 
                             <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" />
                         </VerticalStackLayout>
