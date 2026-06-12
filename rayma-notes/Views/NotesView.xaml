@@ -8,7 +8,8 @@
              NavigationPage.HasNavigationBar="False">
     <Grid Margin="10">
         <CollectionView ItemsSource="{Binding Notes}"
-                        EmptyView="No notes yet. Start by recording one!">
+                        EmptyView="No notes yet. Start by recording one!"
+                        VerticalScrollBarVisibility="Never">
 
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical"
