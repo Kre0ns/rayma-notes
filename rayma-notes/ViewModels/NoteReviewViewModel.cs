@@ -43,6 +43,10 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task DiscardAsync()
         {
+            bool IsConfirmed = await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Discard note?", "This note will be gone forever.", "Discard", "Cancel");
+
+            if (!IsConfirmed) return;
+
             await _navigationService.PopModalAsync();
         }
     }
