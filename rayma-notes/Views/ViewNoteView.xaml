@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
+             x:Class="rayma_notes.Views.ViewNoteView"
+             x:DataType="viewmodels:ViewNoteViewModel"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto, *, Auto" 
+          RowSpacing="10"
+          Margin="10">
+
+        <Label Text="{Binding TitleText}" 
+               FontAttributes="Bold"
+               Grid.Row="0"/>
+
+        <Label Text="{Binding BodyText}"
+                   Grid.Row="1"/>
+
+        <Grid ColumnDefinitions="*, *"
+              ColumnSpacing="10"
+              Grid.Row="2">
+
+            <Button Command="{Binding BackCommand}"
+                    Text="Back"
+                    ImageSource="back.png"
+                    Grid.Column="0"/>
+
+            <Button Command="{Binding EditCommand}"
+                    Text="Edit"
+                    ImageSource="edit.png"
+                    Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</ContentPage>

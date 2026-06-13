@@ -1,4 +1,5 @@
-﻿using rayma_notes.ViewModels;
+﻿using rayma_notes.Models;
+using rayma_notes.ViewModels;
 using rayma_notes.Views;
 
 namespace rayma_notes.Services
@@ -22,6 +23,18 @@ namespace rayma_notes.Services
 
             Page parentPage = Application.Current!.Windows[0]!.Page!;
             await parentPage.Navigation.PushModalAsync(noteReviewView);
+        }
+
+        public async Task PushViewNotePageAsync(Note note)
+        {
+            ViewNoteView viewNoteView = _serviceProvider.GetRequiredService<ViewNoteView>();
+
+            ViewNoteViewModel viewNoteViewModel = (ViewNoteViewModel)viewNoteView.BindingContext;
+            viewNoteViewModel.BodyText = note.Body;
+            viewNoteViewModel.TitleText = note.Title;
+
+            Page parentPage = Application.Current!.Windows[0]!.Page!;
+            await parentPage.Navigation.PushModalAsync(viewNoteView);
         }
 
         public async Task PopModalAsync()

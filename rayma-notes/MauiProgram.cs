@@ -36,6 +36,9 @@ namespace rayma_notes
             builder.Services.AddTransient<NotesView>();
             builder.Services.AddTransient<NotesViewModel>();
 
+            builder.Services.AddTransient<ViewNoteView>();
+            builder.Services.AddTransient<ViewNoteViewModel>();
+
             builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<SettingsViewModel>();
 

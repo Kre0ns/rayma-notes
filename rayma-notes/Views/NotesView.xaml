@@ -31,10 +31,15 @@
 
                             <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" />
                         </VerticalStackLayout>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:NotesViewModel}}, Path=SelectNoteCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                        </Border.GestureRecognizers>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-            
+
         </CollectionView>
     </Grid>
 </ContentPage>
