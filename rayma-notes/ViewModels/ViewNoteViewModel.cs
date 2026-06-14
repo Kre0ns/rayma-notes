@@ -11,7 +11,7 @@ namespace rayma_notes.ViewModels
         private readonly NavigationService _navigationService;
 
         [ObservableProperty]
-        public partial Note Note { get; set; } = new() { Id = -1};
+        public partial Note Note { get; set; } = new();
 
         public ViewNoteViewModel(NavigationService navigationService)
         {

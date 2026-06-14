@@ -13,13 +13,13 @@ namespace rayma_notes.Services
             _serviceProvider = serviceProvider;
         }
 
-        public async Task PushReviewPageAsync(string cleanText)
+        public async Task PushReviewPageAsync(Note note)
         {
             NoteReviewView noteReviewView = _serviceProvider.GetRequiredService<NoteReviewView>();
 
             NoteReviewViewModel noteReviewViewModel = (NoteReviewViewModel)noteReviewView.BindingContext;
-            noteReviewViewModel.BodyText = cleanText;
-            noteReviewViewModel.TitleText = string.Empty;
+            noteReviewViewModel.Note = note;
+
 
             Page parentPage = Application.Current!.Windows[0]!.Page!;
             await parentPage.Navigation.PushModalAsync(noteReviewView);

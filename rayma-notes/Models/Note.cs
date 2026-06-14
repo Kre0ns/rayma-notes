@@ -5,9 +5,9 @@ namespace rayma_notes.Models
     [Table("notes")]
     public class Note
     {
-        [PrimaryKey,  AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         [Column("id")]
-        public int Id { get; set; }
+        public int Id { get; set; } = -1;
 
         [Column("title")]
         [NotNull]

@@ -12,13 +12,12 @@ namespace rayma_notes.ViewModels
         private readonly NavigationService _navigationService;
 
         [ObservableProperty]
-        public partial string TitleText { get; set; } = string.Empty;
-
-        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(HasBody))]
-        public partial string BodyText { get; set; } = string.Empty;
+        public partial Note Note { get; set; } = new();
 
-        public bool HasBody => !string.IsNullOrEmpty(BodyText);
+
+
+        public bool HasBody => !string.IsNullOrEmpty(Note.Body);
 
         public NoteReviewViewModel(IDatabaseService databaseService, NavigationService navigationService)
         {
@@ -30,13 +29,7 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task SaveAsync()
         {
-            Note note = new()
-            {
-                Title = string.IsNullOrWhiteSpace(TitleText) ? "Untitled Note" : TitleText,
-                Body = BodyText
-            };
-
-            await _databaseService.SaveNoteAsync(note);
+            await _databaseService.SaveNoteAsync(Note);
             await _navigationService.PopModalAsync();
         }
 

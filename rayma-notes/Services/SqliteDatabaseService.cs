@@ -55,7 +55,7 @@ namespace rayma_notes.Services
         {
             await InitAsync();
 
-            if (note.Id == 0)
+            if (note.Id == -1)
             {
                 string sql = "INSERT INTO notes (title, body, created_at) VALUES (?, ?, ?)";
 

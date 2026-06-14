@@ -19,7 +19,7 @@
                     Padding="7.5, 0, 7.5, 0"
                     Grid.Row="1">
 
-                <Entry Text="{Binding TitleText}" 
+                <Entry Text="{Binding Note.Title}" 
                        Placeholder="Give your note a title"/>
             </Border>
         </Grid>
@@ -35,7 +35,7 @@
                     Padding="7.5, 0, 7.5, 0"
                     Grid.Row="1">
 
-                <Editor Text="{Binding BodyText}" 
+                <Editor Text="{Binding Note.Body}" 
                         Placeholder="Your note will appear here"/>
             </Border>
         </Grid>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Plugin.Maui.Audio;
+using rayma_notes.Models;
 using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
@@ -89,7 +90,9 @@ namespace rayma_notes.ViewModels
 
                 System.Diagnostics.Debug.WriteLine($"Cleaned transcript: {cleanResult.Text}");
 
-                await _navigationService.PushReviewPageAsync(cleanResult.Text);
+                Note note = new() { Body = cleanResult.Text };
+
+                await _navigationService.PushReviewPageAsync(note);
 
             }
             finally
