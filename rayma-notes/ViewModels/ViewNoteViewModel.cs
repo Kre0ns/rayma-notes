@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using rayma_notes.Models;
 using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
@@ -8,12 +9,9 @@ namespace rayma_notes.ViewModels
     public partial class ViewNoteViewModel : ObservableObject
     {
         private readonly NavigationService _navigationService;
-         
-        [ObservableProperty]
-        public partial string TitleText { get; set; } = string.Empty;
 
         [ObservableProperty]
-        public partial string BodyText { get; set; } = string.Empty;
+        public partial Note Note { get; set; } = new() { Id = -1};
 
         public ViewNoteViewModel(NavigationService navigationService)
         {

@@ -10,11 +10,11 @@
           RowSpacing="10"
           Margin="10">
 
-        <Label Text="{Binding TitleText}" 
+        <Label Text="{Binding Note.Title}" 
                FontAttributes="Bold"
                Grid.Row="0"/>
 
-        <Label Text="{Binding BodyText}"
+        <Label Text="{Binding Note.Body}"
                    Grid.Row="1"/>
 
         <Grid ColumnDefinitions="*, *"

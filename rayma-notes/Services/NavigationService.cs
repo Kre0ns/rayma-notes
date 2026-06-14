@@ -30,8 +30,7 @@ namespace rayma_notes.Services
             ViewNoteView viewNoteView = _serviceProvider.GetRequiredService<ViewNoteView>();
 
             ViewNoteViewModel viewNoteViewModel = (ViewNoteViewModel)viewNoteView.BindingContext;
-            viewNoteViewModel.BodyText = note.Body;
-            viewNoteViewModel.TitleText = note.Title;
+            viewNoteViewModel.Note = note;
 
             Page parentPage = Application.Current!.Windows[0]!.Page!;
             await parentPage.Navigation.PushModalAsync(viewNoteView);
