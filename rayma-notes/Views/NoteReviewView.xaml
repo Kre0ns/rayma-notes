@@ -47,8 +47,16 @@
             <Button Command="{Binding DiscardCommand}"
                     Text="Discard"
                     ImageSource="discard.png"
-                    Grid.Column="0"/>
-            
+                    Grid.Column="0">
+
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsEdit}" Value="True">
+                        <Setter Property="ImageSource" Value="dont_save.png"/>
+                        <Setter Property="Text" Value="Discard Changes"/>
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
             <Button Command="{Binding SaveCommand}"
                     Text="Save"
                     ImageSource="save.png"

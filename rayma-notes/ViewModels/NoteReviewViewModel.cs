@@ -15,7 +15,7 @@ namespace rayma_notes.ViewModels
         [NotifyPropertyChangedFor(nameof(HasBody))]
         public partial Note Note { get; set; } = new();
 
-
+        public bool IsEdit { get; set; } = false; 
 
         public bool HasBody => !string.IsNullOrEmpty(Note.Body);
 
@@ -36,7 +36,10 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task DiscardAsync()
         {
-            bool IsConfirmed = await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Discard note?", "This note will be gone forever.", "Discard", "Cancel");
+            string alertTitle = IsEdit ? "Discard changes?" : "Discard note?";
+            string alertBody = IsEdit ? "The changes you made will be gone forever." : "This note will be gone forever.";
+
+            bool IsConfirmed = await Application.Current!.Windows[0].Page!.DisplayAlertAsync(alertTitle, alertBody, "Discard", "Cancel");
 
             if (!IsConfirmed) return;
 

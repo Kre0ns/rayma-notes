@@ -27,7 +27,7 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         public async Task EditAsync()
         {
-            throw new NotImplementedException();
+            await _navigationService.PushReviewPageAsync(Note);
         }
     }
 }

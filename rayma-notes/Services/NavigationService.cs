@@ -19,7 +19,7 @@ namespace rayma_notes.Services
 
             NoteReviewViewModel noteReviewViewModel = (NoteReviewViewModel)noteReviewView.BindingContext;
             noteReviewViewModel.Note = note;
-
+            noteReviewViewModel.IsEdit = note.Id != -1;
 
             Page parentPage = Application.Current!.Windows[0]!.Page!;
             await parentPage.Navigation.PushModalAsync(noteReviewView);
