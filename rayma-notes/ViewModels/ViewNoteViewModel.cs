@@ -7,7 +7,6 @@ namespace rayma_notes.ViewModels
 {
     public partial class ViewNoteViewModel : ObservableObject
     {
-        private readonly IDatabaseService _databaseService;
         private readonly NavigationService _navigationService;
          
         [ObservableProperty]
@@ -16,9 +15,8 @@ namespace rayma_notes.ViewModels
         [ObservableProperty]
         public partial string BodyText { get; set; } = string.Empty;
 
-        public ViewNoteViewModel(IDatabaseService databaseService, NavigationService navigationService)
+        public ViewNoteViewModel(NavigationService navigationService)
         {
-            _databaseService = databaseService;
             _navigationService = navigationService;
         }
 

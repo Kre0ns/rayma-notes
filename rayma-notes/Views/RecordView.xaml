@@ -27,13 +27,24 @@
 
         <Grid BackgroundColor="Transparent"
               IsVisible="{Binding IsBusy}">
+            
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer/>
+            </Grid.GestureRecognizers>
 
-            <VerticalStackLayout VerticalOptions="Center"
-                                 HorizontalOptions="Center">
+            <Border BackgroundColor="#F0606060"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="10">
+                
+                <VerticalStackLayout >
 
-                <ActivityIndicator IsRunning="True"/>
-                <Label Text="Processing your note, please wait..." />
-            </VerticalStackLayout>
+                    <ActivityIndicator IsRunning="True"/>
+                    <Label Text="Processing your note, please wait..." />
+                </VerticalStackLayout>
+            </Border>
         </Grid>
     </Grid>
 </ContentPage>
