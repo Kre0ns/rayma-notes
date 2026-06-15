@@ -23,13 +23,13 @@ namespace rayma_notes.Services
             await _database.CreateTableAsync<Note>();
         }
 
-        public async Task<int> DeleteNoteAsync(int id)
+        public async Task<int> DeleteNoteAsync(Note note)
         {
             await InitAsync();
 
             string sql = "DELETE FROM notes WHERE id = ?";
 
-            return await _database!.ExecuteAsync(sql, id);
+            return await _database!.ExecuteAsync(sql, note.Id);
         }
 
         public async Task<Note?> GetNoteAsync(int id)

@@ -10,6 +10,6 @@ namespace rayma_notes.Services.Interfaces
 
         Task<int> SaveNoteAsync(Note note);
 
-        Task<int> DeleteNoteAsync(int id);
+        Task<int> DeleteNoteAsync(Note note);
     }
 }

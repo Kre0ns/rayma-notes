@@ -33,7 +33,7 @@ namespace rayma_notes.Services
             viewNoteViewModel.Note = note;
 
             Page parentPage = Application.Current!.Windows[0]!.Page!;
-            await parentPage.Navigation.PushModalAsync(viewNoteView);
+            await parentPage.Navigation.PushAsync(viewNoteView);
         }
 
         public async Task PopModalAsync()
@@ -41,6 +41,13 @@ namespace rayma_notes.Services
             Page parentPage = Application.Current!.Windows[0]!.Page!;
 
             await parentPage.Navigation.PopModalAsync();
+        }
+
+        public async Task PopAsync()
+        {
+            Page parentPage = Application.Current!.Windows[0]!.Page!;
+
+            await parentPage.Navigation.PopAsync();
         }
     }
 }

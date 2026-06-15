@@ -4,9 +4,20 @@
              xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.ViewNoteView"
              x:DataType="viewmodels:ViewNoteViewModel"
-             NavigationPage.HasNavigationBar="False">
+             Title="View Note">
 
-    <Grid RowDefinitions="Auto, *, Auto" 
+    <ContentPage.ToolbarItems>
+        
+        <ToolbarItem Text="Delete"
+                     IconImageSource="delete.png"
+                     Command="{Binding DeleteCommand}"/>
+
+        <ToolbarItem Text="Edit"
+                     IconImageSource="edit.png"
+                     Command="{Binding EditCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, *" 
           RowSpacing="10"
           Margin="10">
 
@@ -14,22 +25,11 @@
                FontAttributes="Bold"
                Grid.Row="0"/>
 
-        <Label Text="{Binding Note.Body}"
-                   Grid.Row="1"/>
+        <ScrollView Grid.Row="1"
+                    VerticalScrollBarVisibility="Never">
 
-        <Grid ColumnDefinitions="*, *"
-              ColumnSpacing="10"
-              Grid.Row="2">
-
-            <Button Command="{Binding BackCommand}"
-                    Text="Back"
-                    ImageSource="back.png"
-                    Grid.Column="0"/>
-
-            <Button Command="{Binding EditCommand}"
-                    Text="Edit"
-                    ImageSource="edit.png"
-                    Grid.Column="1"/>
-        </Grid>
+            <Label Text="{Binding Note.Body}"
+                   LineBreakMode="WordWrap"/>
+        </ScrollView>
     </Grid>
 </ContentPage>
