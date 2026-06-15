@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.OS;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using rayma_notes.Models;
 using rayma_notes.Services;
@@ -8,13 +9,15 @@ namespace rayma_notes.ViewModels
 {
     public partial class ViewNoteViewModel : ObservableObject
     {
+        private readonly IDatabaseService _databaseService;
         private readonly NavigationService _navigationService;
 
         [ObservableProperty]
         public partial Note Note { get; set; } = new();
 
-        public ViewNoteViewModel(NavigationService navigationService)
+        public ViewNoteViewModel(IDatabaseService databaseService, NavigationService navigationService)
         {
+            _databaseService = databaseService;
             _navigationService = navigationService;
         }
 
@@ -28,6 +31,19 @@ namespace rayma_notes.ViewModels
         public async Task EditAsync()
         {
             await _navigationService.PushReviewPageAsync(Note);
+        }
+
+        public async Task ReloadNoteAsync()
+        {
+            if (Note.Id != -1)
+            {
+                Note? updatedNote = await _databaseService.GetNoteAsync(Note.Id);
+
+                if (updatedNote is not null)
+                {
+                    Note = updatedNote;
+                }
+            }
         }
     }
 }

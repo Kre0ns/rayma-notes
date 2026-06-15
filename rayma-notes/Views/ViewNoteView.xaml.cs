@@ -10,4 +10,13 @@ public partial class ViewNoteView : ContentPage
 
 		BindingContext = viewNoteViewModel;
 	}
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is ViewNoteViewModel viewModel)
+        {
+            await viewModel.ReloadNoteAsync();
+        }
+    }
 }
