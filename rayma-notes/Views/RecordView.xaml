@@ -13,14 +13,23 @@
                 HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                 WidthRequest="150"
                 CornerRadius="75"
-                Margin="10"
-                ImageSource="begin_recording.png">
+                Margin="10">
+
+            <Button.ImageSource>
+                <FontImageSource Glyph="&#57624;"
+                                 FontFamily="LucideIcons"
+                                 Color="Black"/>
+            </Button.ImageSource>
 
             <Button.Triggers>
                 <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
                     <Setter Property="CornerRadius" Value="30"/>
                     <Setter Property="BackgroundColor" Value="Red"/>
-                    <Setter Property="ImageSource" Value="end_recording.png"/>
+                    <Setter Property="ImageSource">
+                        <FontImageSource Glyph="&#57703;"
+                                         FontFamily="LucideIcons"
+                                         Color="Black"/>
+                    </Setter>
                 </DataTrigger>
             </Button.Triggers>
         </Button>

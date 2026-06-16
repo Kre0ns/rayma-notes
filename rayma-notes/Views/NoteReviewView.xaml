@@ -46,12 +46,21 @@
 
             <Button Command="{Binding DiscardCommand}"
                     Text="Discard"
-                    ImageSource="discard.png"
                     Grid.Column="0">
+
+                <Button.ImageSource>
+                    <FontImageSource Glyph="&#58867;"
+                                     FontFamily="LucideIcons"
+                                     Color="Black"/>
+                </Button.ImageSource>
 
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding IsEdit}" Value="True">
-                        <Setter Property="ImageSource" Value="dont_save.png"/>
+                        <Setter Property="ImageSource">
+                            <FontImageSource Glyph="&#58867;"
+                                             FontFamily="LucideIcons"
+                                             Color="Black"/>
+                        </Setter>
                         <Setter Property="Text" Value="Discard Changes"/>
                     </DataTrigger>
                 </Button.Triggers>
@@ -59,8 +68,14 @@
 
             <Button Command="{Binding SaveCommand}"
                     Text="Save"
-                    ImageSource="save.png"
-                    Grid.Column="1"/>
+                    Grid.Column="1">
+
+                <Button.ImageSource>
+                    <FontImageSource Glyph="&#57677;"
+                                     FontFamily="LucideIcons"
+                                     Color="black"/>
+                </Button.ImageSource>
+            </Button>
         </Grid>
     </Grid>
 </ContentPage>

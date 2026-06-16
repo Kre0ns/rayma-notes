@@ -7,14 +7,26 @@
              Title="View Note">
 
     <ContentPage.ToolbarItems>
-        
+
         <ToolbarItem Text="Delete"
-                     IconImageSource="delete.png"
-                     Command="{Binding DeleteCommand}"/>
+                     Command="{Binding DeleteCommand}">
+
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="&#57742;"
+                                 FontFamily="LucideIcons"
+                                 Color="White"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
 
         <ToolbarItem Text="Edit"
-                     IconImageSource="edit.png"
-                     Command="{Binding EditCommand}"/>
+                     Command="{Binding EditCommand}">
+            
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="&#57714;"
+                                 FontFamily="LucideIcons"
+                                 Color="White"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, *" 

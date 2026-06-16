@@ -37,13 +37,22 @@
                     VerticalOptions="Center"
                     HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                     CornerRadius="10"
-                    ImageSource="confirm.png"
                     Grid.Column="1"
                     Grid.Row="1">
 
+                <Button.ImageSource>
+                    <FontImageSource Glyph="&#57452;"
+                                     FontFamily="LucideIcons"
+                                     Color="Black"/>
+                </Button.ImageSource>
+
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding HasApiKey}" Value="True">
-                        <Setter Property="ImageSource" Value="delete.png"/>
+                        <Setter Property="ImageSource">
+                            <FontImageSource Glyph="&#57742;"
+                                             FontFamily="LucideIcons"
+                                             Color="Black"/>
+                        </Setter>
                     </DataTrigger>
                 </Button.Triggers>
             </Button>

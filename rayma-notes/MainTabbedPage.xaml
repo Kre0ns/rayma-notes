@@ -6,8 +6,31 @@
             x:Class="rayma_notes.MainTabbedPage"
             android:TabbedPage.ToolbarPlacement="Bottom">
 
-    <views:RecordView Title="Record" IconImageSource="record_tab.png" />
-    <views:NotesView Title="Notes" IconImageSource="notes_tab.png" />
-    <views:SettingsView Title="Settings" IconImageSource="settings_tab.png" />
+    <views:RecordView Title="Record">
+        
+        <views:RecordView.IconImageSource>
+            <FontImageSource Glyph="&#58714;"
+                             FontFamily="LucideIcons"
+                             Color="White"/>
+        </views:RecordView.IconImageSource>
+    </views:RecordView>
+
+    <views:NotesView Title="Notes">
+
+        <views:NotesView.IconImageSource>
+            <FontImageSource Glyph="&#57548;"
+                             FontFamily="LucideIcons"
+                             Color="White"/>
+        </views:NotesView.IconImageSource>
+    </views:NotesView>
+
+    <views:SettingsView Title="Settings">
+
+        <views:SettingsView.IconImageSource>
+            <FontImageSource Glyph="&#57684;"
+                             FontFamily="LucideIcons"
+                             Color="White"/>
+        </views:SettingsView.IconImageSource>
+    </views:SettingsView>
 
 </TabbedPage>
