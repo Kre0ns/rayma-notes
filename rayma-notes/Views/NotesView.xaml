@@ -5,7 +5,8 @@
              xmlns:models="clr-namespace:rayma_notes.Models"
              x:Class="rayma_notes.Views.NotesView"
              x:DataType="viewmodels:NotesViewModel"
-             NavigationPage.HasNavigationBar="False">
+             Title="Notes">
+    
     <Grid Margin="10">
         <CollectionView ItemsSource="{Binding Notes}"
                         EmptyView="No notes yet. Start by recording one!"

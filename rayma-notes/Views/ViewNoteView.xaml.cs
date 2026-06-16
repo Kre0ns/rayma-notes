@@ -9,7 +9,7 @@ public partial class ViewNoteView : ContentPage
 		InitializeComponent();
 
 		BindingContext = viewNoteViewModel;
-	}
+    }
     protected override async void OnAppearing()
     {
         base.OnAppearing();

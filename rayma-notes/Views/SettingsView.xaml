@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.SettingsView"
              x:DataType="viewmodels:SettingsViewModel"
-             NavigationPage.HasNavigationBar="False">
+             Title="Settings">
     
     <VerticalStackLayout Margin="10" Spacing="10">
 
