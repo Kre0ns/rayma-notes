@@ -31,6 +31,13 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task ToggleRecording()
         {
+            string? apiKey = await SecureStorage.Default.GetAsync("groq_api_key");
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Missing API Key", "Please set your API key in the settings before recording.", "OK");
+                return;
+            }
+
             PermissionStatus permissionStatus = await Permissions.RequestAsync<Permissions.Microphone>();
             if (permissionStatus != PermissionStatus.Granted)
             {
