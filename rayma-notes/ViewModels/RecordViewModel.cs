@@ -98,6 +98,11 @@ namespace rayma_notes.ViewModels
             finally
             {
                 IsBusy = false;
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
             }
         }
 
