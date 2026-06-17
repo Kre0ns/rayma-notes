@@ -13,6 +13,11 @@ namespace rayma_notes.Services
             _serviceProvider = serviceProvider;
         }
 
+        private static Page? GetCurrentPage()
+        {
+            return Application.Current?.Windows.FirstOrDefault()?.Page;
+        }
+
         public async Task PushReviewPageAsync(Note note)
         {
             NoteReviewView noteReviewView = _serviceProvider.GetRequiredService<NoteReviewView>();
@@ -21,8 +26,11 @@ namespace rayma_notes.Services
             noteReviewViewModel.Note = note;
             noteReviewViewModel.IsEdit = note.Id != -1;
 
-            Page parentPage = Application.Current!.Windows[0]!.Page!;
-            await parentPage.Navigation.PushModalAsync(noteReviewView);
+            Page? parentPage = GetCurrentPage();
+            if (parentPage is not null)
+            {
+                await parentPage.Navigation.PushModalAsync(noteReviewView);
+            }
         }
 
         public async Task PushViewNotePageAsync(Note note)
@@ -32,22 +40,30 @@ namespace rayma_notes.Services
             ViewNoteViewModel viewNoteViewModel = (ViewNoteViewModel)viewNoteView.BindingContext;
             viewNoteViewModel.Note = note;
 
-            Page parentPage = Application.Current!.Windows[0]!.Page!;
-            await parentPage.Navigation.PushAsync(viewNoteView);
+            Page? parentPage = GetCurrentPage();
+            if (parentPage is not null)
+            {
+                await parentPage.Navigation.PushAsync(viewNoteView);
+            }
         }
 
         public async Task PopModalAsync()
         {
-            Page parentPage = Application.Current!.Windows[0]!.Page!;
+            Page? parentPage = GetCurrentPage();
+            if (parentPage is not null)
+            {
+                await parentPage.Navigation.PopModalAsync();
 
-            await parentPage.Navigation.PopModalAsync();
+            }
         }
 
         public async Task PopAsync()
         {
-            Page parentPage = Application.Current!.Windows[0]!.Page!;
-
-            await parentPage.Navigation.PopAsync();
+            Page? parentPage = GetCurrentPage();
+            if (parentPage is not null)
+            {
+                await parentPage.Navigation.PopAsync();
+            }
         }
     }
 }
