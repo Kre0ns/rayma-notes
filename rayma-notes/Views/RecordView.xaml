@@ -24,7 +24,7 @@
             <Button.Triggers>
                 <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
                     <Setter Property="CornerRadius" Value="30"/>
-                    <Setter Property="BackgroundColor" Value="Red"/>
+                    <Setter Property="Background" Value="Red"/>
                     <Setter Property="ImageSource">
                         <FontImageSource Glyph="&#57703;"
                                          FontFamily="LucideIcons"
