@@ -46,7 +46,7 @@ namespace rayma_notes.Services
         {
             await InitAsync();
 
-            string sql = "SELECT * FROM notes";
+            string sql = "SELECT * FROM notes ORDER BY created_at DESC";
 
             return await _database!.QueryAsync<Note>(sql);
         }
