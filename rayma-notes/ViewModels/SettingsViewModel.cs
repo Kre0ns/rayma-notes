@@ -1,5 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.App;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using rayma_notes.Services;
 using rayma_notes.Services.Interfaces;
 
 namespace rayma_notes.ViewModels
@@ -68,15 +70,15 @@ namespace rayma_notes.ViewModels
                     break;
 
                 case KeyCheckStatus.Invalid:
-                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
+                    await DialogService.ShowAlertAsync("Key Error", "Your API key is expired or invalid.", "OK");
                     break;
 
                 case KeyCheckStatus.NetworkError:
-                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
+                    await DialogService.ShowAlertAsync("No Internet", "You seem to be offline. Please check your connection.", "OK");
                     break;
 
                 case KeyCheckStatus.SystemError:
-                    await Application.Current!.Windows[0].Page!.DisplayAlertAsync("System Error", $"Key validation failed: {checkResult.ErrorDetails}", "OK");
+                    await DialogService.ShowAlertAsync("System Error", $"Key validation failed: {checkResult.ErrorDetails}", "OK");
                     break;
             }
             

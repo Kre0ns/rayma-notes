@@ -39,7 +39,7 @@ namespace rayma_notes.ViewModels
             string alertTitle = IsEdit ? "Discard changes?" : "Discard note?";
             string alertBody = IsEdit ? "The changes you made will be gone forever." : "This note will be gone forever.";
 
-            bool IsConfirmed = await Application.Current!.Windows[0].Page!.DisplayAlertAsync(alertTitle, alertBody, "Discard", "Cancel");
+            bool IsConfirmed = await DialogService.ShowConfirmationAsync(alertTitle, alertBody, "Discard", "Cancel");
 
             if (!IsConfirmed) return;
 
