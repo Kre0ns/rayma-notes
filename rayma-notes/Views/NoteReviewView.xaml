@@ -4,78 +4,91 @@
              xmlns:viewmodels="clr-namespace:rayma_notes.ViewModels"
              x:Class="rayma_notes.Views.NoteReviewView"
              x:DataType="viewmodels:NoteReviewViewModel">
+
+    <Grid>
+        <Border StrokeShape="RoundRectangle 10"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightBg}, Dark={DynamicResource DarkBg}}"
+                Padding="10">
+        
+            <Grid RowDefinitions="Auto, *, Auto" 
+                  RowSpacing="10">
+        
+                <Grid RowDefinitions="Auto, Auto"
+                      Grid.Row="0">
+
+                    <Label Text="Title"
+                           FontAttributes="Bold"
+                           Margin="5, 0, 5, 2"
+                           Grid.Row="0"/>
+
+                    <Border StrokeShape="RoundRectangle 10"
+                            Background="{AppThemeBinding Light={DynamicResource LightBgLight}, Dark={DynamicResource DarkBgLight}}"
+                            Padding="7.5, 0, 7.5, 0"
+                            Grid.Row="1">
+
+                        <Entry Text="{Binding Note.Title}" 
+                               Placeholder="Give your note a title"/>
+                    </Border>
+                </Grid>
+
+                <Grid RowDefinitions="Auto, *"
+                      Grid.Row="1">
     
-    <Grid RowDefinitions="Auto, *, Auto" 
-          RowSpacing="10"
-          Margin="10">
-        <Grid RowDefinitions="Auto, Auto"
-              Grid.Row="0">
+                    <Label Text="Body"
+                           FontAttributes="Bold"
+                           Margin="5, 0, 5, 2"
+                           Grid.Row="0"/>
 
-            <Label Text="Title"
-                   Margin="5, 0, 5, 2"
-                   Grid.Row="0"/>
+                    <Border StrokeShape="RoundRectangle 10"
+                            Background="{AppThemeBinding Light={DynamicResource LightBgLight}, Dark={DynamicResource DarkBgLight}}"
+                            Padding="7.5, 0, 7.5, 0"
+                            Grid.Row="1">
 
-            <Border StrokeShape="RoundRectangle 10"
-                    Padding="7.5, 0, 7.5, 0"
-                    Grid.Row="1">
+                        <Editor Text="{Binding Note.Body}" 
+                                Placeholder="Your note will appear here"/>
+                    </Border>
+                </Grid>
 
-                <Entry Text="{Binding Note.Title}" 
-                       Placeholder="Give your note a title"/>
-            </Border>
-        </Grid>
+                <Grid ColumnDefinitions="*, *"
+                      ColumnSpacing="10"
+                      Grid.Row="2">
 
-        <Grid RowDefinitions="Auto, *"
-              Grid.Row="1">
-    
-            <Label Text="Body"
-                   Margin="5, 0, 5, 2"
-                   Grid.Row="0"/>
+                    <Button Command="{Binding DiscardCommand}"
+                            Text="Discard"
+                            TextColor="{DynamicResource LightText}"
+                            Background="{AppThemeBinding Light={DynamicResource LightSecondary}, Dark={DynamicResource DarkSecondary}}"
+                            Grid.Column="0">
 
-            <Border StrokeShape="RoundRectangle 10"
-                    Padding="7.5, 0, 7.5, 0"
-                    Grid.Row="1">
-
-                <Editor Text="{Binding Note.Body}" 
-                        Placeholder="Your note will appear here"/>
-            </Border>
-        </Grid>
-
-        <Grid ColumnDefinitions="*, *"
-              ColumnSpacing="10"
-              Grid.Row="2">
-
-            <Button Command="{Binding DiscardCommand}"
-                    Text="Discard"
-                    Grid.Column="0">
-
-                <Button.ImageSource>
-                    <FontImageSource Glyph="&#58867;"
-                                     FontFamily="LucideIcons"
-                                     Color="Black"/>
-                </Button.ImageSource>
-
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsEdit}" Value="True">
-                        <Setter Property="ImageSource">
+                        <Button.ImageSource>
                             <FontImageSource Glyph="&#58867;"
                                              FontFamily="LucideIcons"
                                              Color="Black"/>
-                        </Setter>
-                        <Setter Property="Text" Value="Discard Changes"/>
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
+                        </Button.ImageSource>
 
-            <Button Command="{Binding SaveCommand}"
-                    Text="Save"
-                    Grid.Column="1">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsEdit}" Value="True">
+                                <Setter Property="ImageSource">
+                                    <FontImageSource Glyph="&#58867;"
+                                                     FontFamily="LucideIcons"
+                                                     Color="Black"/>
+                                </Setter>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
 
-                <Button.ImageSource>
-                    <FontImageSource Glyph="&#57677;"
-                                     FontFamily="LucideIcons"
-                                     Color="black"/>
-                </Button.ImageSource>
-            </Button>
-        </Grid>
+                    <Button Command="{Binding SaveCommand}"
+                            Text="Save"
+                            TextColor="{DynamicResource LightText}"
+                            Grid.Column="1">
+
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#57677;"
+                                             FontFamily="LucideIcons"
+                                             Color="Black"/>
+                        </Button.ImageSource>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </ContentPage>

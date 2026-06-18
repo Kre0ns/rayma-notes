@@ -14,7 +14,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="&#57742;"
                                  FontFamily="LucideIcons"
-                                 Color="White"/>
+                                 Color="{AppThemeBinding Light={DynamicResource Black}, Dark={DynamicResource White}}"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
 
@@ -24,24 +24,29 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="&#57714;"
                                  FontFamily="LucideIcons"
-                                 Color="White"/>
+                                 Color="{AppThemeBinding Light={DynamicResource Black}, Dark={DynamicResource White}}"/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, *" 
-          RowSpacing="10"
-          Margin="10">
+    <Border StrokeShape="RoundRectangle 10"
+            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBg}, Dark={DynamicResource DarkBg}}"
+            Padding="10">
+        
+        <Grid RowDefinitions="Auto, *" 
+              RowSpacing="10">
 
-        <Label Text="{Binding Note.Title}" 
-               FontAttributes="Bold"
-               Grid.Row="0"/>
+            <Label Text="{Binding Note.Title}" 
+                   FontAttributes="Bold"
+                   Grid.Row="0"/>
 
-        <ScrollView Grid.Row="1"
-                    VerticalScrollBarVisibility="Never">
+            <ScrollView Grid.Row="1"
+                        VerticalScrollBarVisibility="Never">
 
-            <Label Text="{Binding Note.Body}"
-                   LineBreakMode="WordWrap"/>
-        </ScrollView>
-    </Grid>
+                <Label Text="{Binding Note.Body}"
+                       LineBreakMode="WordWrap"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextMuted}, Dark={DynamicResource DarkTextMuted}}"/>
+            </ScrollView>
+        </Grid>
+    </Border>
 </ContentPage>

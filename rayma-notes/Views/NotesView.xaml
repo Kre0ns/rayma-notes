@@ -7,7 +7,7 @@
              x:DataType="viewmodels:NotesViewModel"
              Title="Notes">
     
-    <Grid Margin="10">
+    <Grid>
         <CollectionView ItemsSource="{Binding Notes}"
                         EmptyView="No notes yet. Start by recording one!"
                         VerticalScrollBarVisibility="Never">
@@ -20,7 +20,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Note">
                     <Border StrokeShape="RoundRectangle 10"
-                            Padding="10">
+                            Padding="10"
+                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBg}, Dark={DynamicResource DarkBg}}">
                         <VerticalStackLayout>
                             <Label Text="{Binding Title}"
                                    FontAttributes="Bold"
@@ -28,9 +29,11 @@
 
                             <Label Text="{Binding Body}"
                                    LineBreakMode="TailTruncation"
-                                   MaxLines="2"/>
+                                   MaxLines="2"
+                                   TextColor="{AppThemeBinding Light={DynamicResource LightTextMuted}, Dark={DynamicResource DarkTextMuted}}"/>
 
-                            <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" />
+                            <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}"
+                                   TextColor="{AppThemeBinding Light={DynamicResource LightTextMuted}, Dark={DynamicResource DarkTextMuted}}"/>
                         </VerticalStackLayout>
 
                         <Border.GestureRecognizers>

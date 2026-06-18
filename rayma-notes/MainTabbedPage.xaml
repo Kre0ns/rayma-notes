@@ -11,7 +11,7 @@
         <views:RecordView.IconImageSource>
             <FontImageSource Glyph="&#58714;"
                              FontFamily="LucideIcons"
-                             Color="White"/>
+                             Color="{AppThemeBinding Light={DynamicResource Black}, Dark={DynamicResource White}}"/>
         </views:RecordView.IconImageSource>
     </views:RecordView>
 
@@ -20,7 +20,7 @@
         <views:NotesView.IconImageSource>
             <FontImageSource Glyph="&#57548;"
                              FontFamily="LucideIcons"
-                             Color="White"/>
+                             Color="{AppThemeBinding Light={DynamicResource Black}, Dark={DynamicResource White}}"/>
         </views:NotesView.IconImageSource>
     </views:NotesView>
 
@@ -29,7 +29,7 @@
         <views:SettingsView.IconImageSource>
             <FontImageSource Glyph="&#57684;"
                              FontFamily="LucideIcons"
-                             Color="White"/>
+                             Color="{AppThemeBinding Light={DynamicResource Black}, Dark={DynamicResource White}}"/>
         </views:SettingsView.IconImageSource>
     </views:SettingsView>
 

@@ -13,8 +13,7 @@
                 VerticalOptions="Center"
                 HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
                 WidthRequest="150"
-                CornerRadius="75"
-                Margin="10">
+                CornerRadius="75">
 
             <Button.ImageSource>
                 <FontImageSource Glyph="&#57624;"
@@ -24,7 +23,7 @@
 
             <Button.Triggers>
                 <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                    <Setter Property="Background" Value="Red"/>
+                    <Setter Property="Background" Value="{AppThemeBinding Light={DynamicResource LightSecondary}, Dark={DynamicResource DarkSecondary}}"/>
                 </DataTrigger>
             </Button.Triggers>
         </Button>

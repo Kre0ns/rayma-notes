@@ -6,56 +6,64 @@
              x:DataType="viewmodels:SettingsViewModel"
              Title="Settings">
     
-    <VerticalStackLayout Margin="10" Spacing="10">
+    <VerticalStackLayout Spacing="10">
 
-        <Grid RowDefinitions="Auto, *" 
-              ColumnDefinitions="*, Auto"
-              ColumnSpacing="5">
+        <Border StrokeShape="RoundRectangle 10"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightBg}, Dark={DynamicResource DarkBg}}"
+                Padding="10">
+            
+            <Grid RowDefinitions="Auto, *" 
+                  ColumnDefinitions="*, Auto"
+                  ColumnSpacing="5">
 
                 <Label Text="API Key"
+                       FontAttributes="Bold"
                        Margin="5, 0, 5, 2"
                        Grid.Row="0"/>
 
                 <Border StrokeShape="RoundRectangle 10"
                         Padding="7.5, 0, 7.5, 0"
                         Grid.Column="0"
-                        Grid.Row="1">
+                        Grid.Row="1"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBgLight}, Dark={DynamicResource DarkBgLight}}">
 
                     <Entry Text="{Binding ApiKeyText}"
                            IsPassword="True">
 
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding HasApiKey}" Value="True">
-                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter  Property="IsEnabled" Value="False"/>
                             </DataTrigger>
                         </Entry.Triggers>
                     </Entry>
                 </Border>
 
-            <Button Command="{Binding HandleApiKeyCommand}" 
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Center"
-                    HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
-                    CornerRadius="10"
-                    Grid.Column="1"
-                    Grid.Row="1">
+                <Button Command="{Binding HandleApiKeyCommand}" 
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Center"
+                        HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
+                        CornerRadius="10"
+                        Grid.Column="1"
+                        Grid.Row="1">
 
-                <Button.ImageSource>
-                    <FontImageSource Glyph="&#57452;"
-                                     FontFamily="LucideIcons"
-                                     Color="Black"/>
-                </Button.ImageSource>
+                    <Button.ImageSource>
+                        <FontImageSource Glyph="&#57452;"
+                                         FontFamily="LucideIcons"
+                                         Color="Black"/>
+                    </Button.ImageSource>
 
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding HasApiKey}" Value="True">
-                        <Setter Property="ImageSource">
-                            <FontImageSource Glyph="&#57742;"
-                                             FontFamily="LucideIcons"
-                                             Color="Black"/>
-                        </Setter>
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-        </Grid>
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding HasApiKey}" Value="True">
+                            <Setter Property="ImageSource">
+                                <FontImageSource Glyph="&#57742;"
+                                                 FontFamily="LucideIcons"
+                                                 Color="Black"/>
+                            </Setter>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightSecondary}, Dark={DynamicResource DarkSecondary}}"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+        </Border>
     </VerticalStackLayout>
 </ContentPage>
