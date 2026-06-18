@@ -29,7 +29,7 @@ namespace rayma_notes.ViewModels
         }
 
         [RelayCommand]
-        private async Task ToggleRecording()
+        public async Task RecordPressedAsync()
         {
             string? apiKey = await SecureStorage.Default.GetAsync("groq_api_key");
             if (string.IsNullOrEmpty(apiKey))
@@ -44,36 +44,34 @@ namespace rayma_notes.ViewModels
                 return;
             }
 
-            try
+            if (!IsRecording)
             {
-                if (!IsRecording)
-                {
-                    await _audioRecorder.StartAsync();
+                await _audioRecorder.StartAsync();
 
-                    IsRecording = true;
-                }
-                else
-                {
-                    IsRecording = false;
-
-                    IAudioSource audioSource = await _audioRecorder.StopAsync();
-
-                    if (audioSource is FileAudioSource fileAudioSource)
-                    {
-                        string audioPath = fileAudioSource.GetFilePath();
-                        System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {audioPath}");
-
-                        await ProcessRecording(audioPath);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to record: {ex.Message}");
+                IsRecording = true;
             }
         }
 
-        private async Task ProcessRecording(string filePath)
+        [RelayCommand]
+        public async Task RecordReleasedAsync()
+        {
+            if (IsRecording)
+            {
+                IsRecording = false;
+
+                IAudioSource audioSource = await _audioRecorder.StopAsync();
+
+                if (audioSource is FileAudioSource fileAudioSource)
+                {
+                    string audioPath = fileAudioSource.GetFilePath();
+                    System.Diagnostics.Debug.WriteLine($"AUDIO SAVED TO: {audioPath}");
+
+                    await ProcessRecordingAsync(audioPath);
+                }
+            }
+        }
+
+        private async Task ProcessRecordingAsync(string filePath)
         {
             IsBusy = true;
 

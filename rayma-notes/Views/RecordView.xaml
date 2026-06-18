@@ -7,7 +7,8 @@
              Title="Record">
 
     <Grid>
-        <Button Command="{Binding ToggleRecordingCommand}" 
+        <Button Pressed="Record_Pressed" 
+                Released="Record_Released" 
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 HeightRequest="{Binding Source={RelativeSource Self}, Path=Width}"
@@ -23,13 +24,7 @@
 
             <Button.Triggers>
                 <DataTrigger TargetType="Button" Binding="{Binding IsRecording}" Value="True">
-                    <Setter Property="CornerRadius" Value="30"/>
                     <Setter Property="Background" Value="Red"/>
-                    <Setter Property="ImageSource">
-                        <FontImageSource Glyph="&#57703;"
-                                         FontFamily="LucideIcons"
-                                         Color="Black"/>
-                    </Setter>
                 </DataTrigger>
             </Button.Triggers>
         </Button>
