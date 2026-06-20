@@ -28,7 +28,8 @@
                         BackgroundColor="{AppThemeBinding Light={DynamicResource LightBgLight}, Dark={DynamicResource DarkBgLight}}">
 
                     <Entry Text="{Binding ApiKeyText}"
-                           IsPassword="True">
+                           IsPassword="True"
+                           VerticalTextAlignment="Center">
 
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding HasApiKey}" Value="True">
