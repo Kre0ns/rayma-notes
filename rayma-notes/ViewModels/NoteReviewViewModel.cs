@@ -29,6 +29,8 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         private async Task SaveAsync()
         {
+            if (string.IsNullOrEmpty(Note.Title)) Note.Title = "Untitled Note";
+
             await _databaseService.SaveNoteAsync(Note);
             await _navigationService.PopModalAsync();
         }
