@@ -14,6 +14,8 @@ namespace rayma_notes.ViewModels
         private readonly IAiService _aiService;
         private readonly NavigationService _navigationService;
 
+        private bool _isHolding = false;
+
         [ObservableProperty]
         public partial bool IsRecording { get; set; } = false;
 
@@ -31,15 +33,25 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         public async Task RecordPressedAsync()
         {
+            _isHolding = true;
+
             string? apiKey = await SecureStorage.Default.GetAsync("groq_api_key");
             if (string.IsNullOrEmpty(apiKey))
             {
                 await DialogService.ShowAlertAsync("Missing API Key", "Please set your API key in the settings before recording.", "OK");
+
+                _isHolding = false;
                 return;
             }
 
             PermissionStatus permissionStatus = await Permissions.RequestAsync<Permissions.Microphone>();
             if (permissionStatus != PermissionStatus.Granted)
+            {
+                _isHolding = false;
+                return;
+            }
+
+            if (!_isHolding)
             {
                 return;
             }
@@ -55,6 +67,8 @@ namespace rayma_notes.ViewModels
         [RelayCommand]
         public async Task RecordReleasedAsync()
         {
+            _isHolding = false;
+
             if (IsRecording)
             {
                 IsRecording = false;
