@@ -8,8 +8,8 @@ A BYOK (Bring Your Own Key) voice notes app that automatically transcribes and c
 ![Banner](./assets/Rayma%20Notes%20Banner.png)
 
 ## Features 
-- **BYOK structure** - Your'e completely in control of your API key and usage.
-- **Precise transcription** - Exceptionaly accurate transcription using OpenAI Whisper.
+- **BYOK structure** - You're completely in control of your API key and usage.
+- **Precise transcription** - Exceptionally accurate transcription using OpenAI Whisper.
 - **Preserving cleanup** - Cleanup of filler words and minor typos while preserving the original tone and intent.
 
 ## Getting Started
