@@ -27,3 +27,7 @@ To use the app you will need a Groq API key
 5. Enter and save the API key you generated earlier
 
 You can now use the app!
+
+## Demo
+
+https://github.com/user-attachments/assets/9ed2b076-2ca5-4bc1-8309-079804723d8f
