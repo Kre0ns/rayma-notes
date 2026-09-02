@@ -11,7 +11,7 @@ namespace rayma_notes.Services
         private static readonly HttpClient _httpClient = new();
 
         private const string TranscriptionModel = "whisper-large-v3-turbo";
-        private const string CleanModel = "llama-3.3-70b-versatile";
+        private const string CleanModel = "openai/gpt-oss-120b";
 
         private const string TranscriptionEndpoint = "https://api.groq.com/openai/v1/audio/transcriptions";
         private const string ChatCompletionEndpoint = "https://api.groq.com/openai/v1/chat/completions";
